@@ -1,88 +1,104 @@
-# Chris Titus Tech's Windows Utility
+<div align="center">
+  <img src="docs/assets/navlogo.png" height="120" />
 
-[![Version](https://img.shields.io/github/v/release/ChrisTitusTech/winutil?color=%230567ff&label=Latest%20Release&style=for-the-badge)](https://github.com/ChrisTitusTech/winutil/releases/latest)
-![GitHub Downloads (specific asset, all releases)](https://img.shields.io/github/downloads/ChrisTitusTech/winutil/winutil.ps1?label=Total%20Downloads&style=for-the-badge)
-[![](https://dcbadge.limes.pink/api/server/https://discord.gg/RUbZUZyByQ?theme=default-inverted&style=for-the-badge)](https://discord.gg/RUbZUZyByQ)
-[![Static Badge](https://img.shields.io/badge/Documentation-_?style=for-the-badge&logo=bookstack&color=grey)](https://winutil.christitus.com/)
+# UltimateWindowsFix
 
-This utility is a compilation of Windows tasks I perform on each Windows system I use. It is meant to streamline *installs*, debloat with *tweaks*, troubleshoot with *config*, and fix Windows *updates*. I am extremely picky about any contributions to keep this project clean and efficient.
+**A personal Windows toolkit — fork of [ChrisTitusTech/winutil](https://github.com/ChrisTitusTech/winutil) for debloating, configuring, and fixing common Windows issues.**
 
-![screen-install](https://raw.githubusercontent.com/Chris-Titus-Docs/winutil-docs/refs/heads/main/assets/images/Title-Screen.png)
+[![Upstream](https://img.shields.io/badge/fork%20of-ChrisTitusTech%2Fwinutil-blue.svg)](https://github.com/ChrisTitusTech/winutil)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Made for Windows](https://img.shields.io/badge/Windows-10%20%7C%2011-0078d4.svg)](#)
 
-## 💡 Usage
+<img src="docs/assets/images/Screen.png" width="80%" />
 
-Winutil must be run in Admin mode because it performs system-wide tweaks. To achieve this, run PowerShell as an administrator. Here are a few ways to do it:
+</div>
 
-1. **Start menu Method:**
-   - Right-click on the start menu.
-   - Choose "Windows PowerShell (Admin)" (for Windows 10) or "Terminal (Admin)" (for Windows 11).
+---
 
-2. **Search and Launch Method:**
-   - Press the Windows key.
-   - Type "PowerShell" or "Terminal" (for Windows 11).
-   - Press `Ctrl + Shift + Enter` or Right-click and choose "Run as administrator" to launch it with administrator privileges.
+## About
 
-### Launch Command
+> **This is a personal fork.** It is not a separate product. All the heavy engineering belongs to [Chris Titus and the upstream winutil contributors](https://github.com/ChrisTitusTech/winutil/graphs/contributors).
 
-#### Stable Branch (Recommended)
+|        |                                                                                                  |
+| ------ | ------------------------------------------------------------------------------------------------ |
+| Who    | Maintained by [Gyanesh Samanta](https://github.com/GyaneshSamanta) as a personal toolkit.        |
+| What   | A PowerShell-driven utility that bundles install, tweak, fix, and updates panels for Windows.    |
+| When   | Forked off ChrisTitusTech/winutil — pulled in for personal use across reformats and fresh setups. |
+| Where  | Runs locally on any Windows 10 / 11 box; one-liner via `irm` + `iex` in an admin PowerShell.     |
+| Why    | I rebuild Windows machines often. This is the script I trust to make a fresh box mine in 5 min.   |
 
-```ps1
-irm "https://christitus.com/win" | iex
+## The Story
+
+Every Windows reformat used to be a half-day ritual — uninstalling Candy Crush, hunting checkbox tweaks across five Settings pages, copy-pasting `winget install` lines from old gists. The first time I ran ChrisTitusTech/winutil end-to-end and watched it batch-install my whole stack, kill telemetry, and surface MicroWin in one window, the ritual collapsed into a coffee break.
+
+I forked it for two reasons. First, **pinning** — I wanted a known-good snapshot I could run during a reformat without depending on whatever upstream main happens to be that day. Second, **personalization** — preset selections and tweaks tuned to how I actually use my machines. The fork stays close to upstream; this isn't a rewrite, it's a bookmark with a few sticky notes.
+
+If you're not me, **use upstream**. It's better maintained, better documented, and gets new features first.
+
+## Gallery
+
+<div align="center">
+  <img src="docs/assets/images/Install-Tab-Dark.png" width="45%" />
+  <img src="docs/assets/images/Tweaks-Tab-Dark.png" width="45%" />
+  <br />
+  <img src="docs/assets/images/Microwin-Dark.png" width="45%" />
+  <img src="docs/assets/images/MicroWinScreen.png" width="45%" />
+</div>
+
+---
+
+## Tech Stack
+
+- **PowerShell 5.1+** — primary scripting surface.
+- **WPF / XAML** — the UI defined under `xaml/`.
+- **winget / Chocolatey** — package backends invoked under the hood.
+- **Pester** — test harness in `pester/`.
+- Build: `Compile.ps1` stitches `functions/`, `xaml/`, and `config/` into a single distributable script.
+
+## Repo Structure
+
 ```
-#### Dev Branch
-
-```ps1
-irm "https://christitus.com/windev" | iex
+UltimateWindowsFix/
+├── Compile.ps1     # Build script that produces the single-file release
+├── config/         # JSON: app lists, tweak definitions, preset bundles
+├── functions/      # PowerShell functions (private + public + event handlers)
+├── xaml/           # WPF UI markup
+├── scripts/        # Helper scripts (start, main entry)
+├── overrides/      # Local overrides patched in during compile
+├── pester/         # Test specs
+├── lint/           # Linting helpers
+├── docs/           # Documentation site assets (mirrors upstream)
+└── releases/       # Compiled output
 ```
 
-If you have Issues, refer to [Known Issues](https://winutil.christitus.com/knownissues/) or [Create Issue](https://github.com/ChrisTitusTech/winutil/issues)
+## Getting Started
 
-## 🎓 Documentation
+The fastest path (admin PowerShell):
 
-### [WinUtil Official Documentation](https://winutil.christitus.com/)
-
-### [YouTube Tutorial](https://www.youtube.com/watch?v=6UQZ5oQg8XA)
-
-### [ChrisTitus.com Article](https://christitus.com/windows-tool/)
-
-## 🛠️ Build & Develop
-
-> [!NOTE]
-> Winutil is a relatively large script, so it's split into multiple files which're combined into a single `.ps1` file using a custom compiler. This makes maintaining the project a lot easier.
-
-Get a copy of the source code, this can be done using GitHub UI (`Code -> Download ZIP`), or by cloning (downloading) the repo using git.
-
-If git is installed, run the following commands under a PowerShell window to clone and move into project's directory:
-```ps1
-git clone --depth 1 "https://github.com/ChrisTitusTech/winutil.git"
-cd winutil
+```powershell
+irm "https://raw.githubusercontent.com/GyaneshSamanta/UltimateWindowsFix/main/winutil.ps1" | iex
 ```
 
-To build the project, run the Compile Script under a PowerShell window (admin permissions IS NOT required):
-```ps1
+Or build from source:
+
+```powershell
+git clone https://github.com/GyaneshSamanta/UltimateWindowsFix.git
+cd UltimateWindowsFix
 .\Compile.ps1
+.\winutil.ps1
 ```
 
-You'll see a new file named `winutil.ps1`, which's created by `Compile.ps1` script, now you can run it as admin and a new window will popup, enjoy your own compiled version of WinUtil :)
+For full feature documentation, screenshots of every tab, and the development guide, see **[upstream docs](https://christitustech.github.io/winutil/)** — this fork inherits its behavior.
 
-> [!TIP]
-> For more info on using WinUtil and how to develop for it, please consider reading [the Contribution Guidelines](https://winutil.christitus.com/contributing/), if you don't know where to start, or have questions, you can ask over on our [Discord Community Server](https://discord.gg/RUbZUZyByQ) and active project members will answer when they can.
+## Contributing
 
-## 💖 Support
-- To morally and mentally support the project, make sure to leave a ⭐️!
-- EXE Wrapper for $10 @ https://www.cttstore.com/windows-toolbox
+Please contribute upstream: [ChrisTitusTech/winutil](https://github.com/ChrisTitusTech/winutil). Issues filed on this fork will generally be redirected there unless they relate to a fork-specific change.
 
-## 💖 Sponsors
+## License
 
-These are the sponsors that help keep this project alive with monthly contributions.
+[MIT](LICENSE) — inherited from upstream.
 
-<!-- sponsors --><a href="https://github.com/markamos"><img src="https:&#x2F;&#x2F;github.com&#x2F;markamos.png" width="60px" alt="User avatar: Mark Amos" /></a><a href="https://github.com/dwelfusius"><img src="https:&#x2F;&#x2F;github.com&#x2F;dwelfusius.png" width="60px" alt="User avatar: " /></a><a href="https://github.com/mews-se"><img src="https:&#x2F;&#x2F;github.com&#x2F;mews-se.png" width="60px" alt="User avatar: Martin Stockzell" /></a><a href="https://github.com/jdiegmueller"><img src="https:&#x2F;&#x2F;github.com&#x2F;jdiegmueller.png" width="60px" alt="User avatar: Jason A. Diegmueller" /></a><a href="https://github.com/robertsandrock"><img src="https:&#x2F;&#x2F;github.com&#x2F;robertsandrock.png" width="60px" alt="User avatar: RMS" /></a><a href="https://github.com/KenichiQaz"><img src="https:&#x2F;&#x2F;github.com&#x2F;KenichiQaz.png" width="60px" alt="User avatar: Stefan" /></a><a href="https://github.com/paulsheets"><img src="https:&#x2F;&#x2F;github.com&#x2F;paulsheets.png" width="60px" alt="User avatar: Paul" /></a><a href="https://github.com/djones369"><img src="https:&#x2F;&#x2F;github.com&#x2F;djones369.png" width="60px" alt="User avatar: Dave J  (WhamGeek)" /></a><a href="https://github.com/anthonymendez"><img src="https:&#x2F;&#x2F;github.com&#x2F;anthonymendez.png" width="60px" alt="User avatar: Anthony Mendez" /></a><a href="https://github.com/FatBastard0"><img src="https:&#x2F;&#x2F;github.com&#x2F;FatBastard0.png" width="60px" alt="User avatar: " /></a><a href="https://github.com/DursleyGuy"><img src="https:&#x2F;&#x2F;github.com&#x2F;DursleyGuy.png" width="60px" alt="User avatar: DursleyGuy" /></a><a href="https://github.com/quaszi"><img src="https:&#x2F;&#x2F;github.com&#x2F;quaszi.png" width="60px" alt="User avatar: " /></a><a href="https://github.com/DwayneTheRockLobster1"><img src="https:&#x2F;&#x2F;github.com&#x2F;DwayneTheRockLobster1.png" width="60px" alt="User avatar: " /></a><a href="https://github.com/KieraKujisawa"><img src="https:&#x2F;&#x2F;github.com&#x2F;KieraKujisawa.png" width="60px" alt="User avatar: Kiera Meredith" /></a><a href="https://github.com/andrewpayne68"><img src="https:&#x2F;&#x2F;github.com&#x2F;andrewpayne68.png" width="60px" alt="User avatar: Andrew P" /></a><!-- sponsors -->
+## Credits
 
-## 🏅 Thanks to all Contributors
-Thanks a lot for spending your time helping Winutil grow. Thanks a lot! Keep rocking 🍻.
-
-[![Contributors](https://contrib.rocks/image?repo=ChrisTitusTech/winutil)](https://github.com/ChrisTitusTech/winutil/graphs/contributors)
-
-## 📊 GitHub Stats
-
-![Alt](https://repobeats.axiom.co/api/embed/aad37eec9114c507f109d34ff8d38a59adc9503f.svg "Repobeats analytics image")
+- **Upstream:** [Chris Titus Tech](https://github.com/ChrisTitusTech) and every [winutil contributor](https://github.com/ChrisTitusTech/winutil/graphs/contributors).
+- **Fork maintainer:** [Gyanesh Samanta](https://github.com/GyaneshSamanta).
